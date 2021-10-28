@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public void Quit()
     {
+        Debug.Log("Quitting");
         PhotonNetwork.LeaveRoom();
     }
 
