@@ -11,9 +11,13 @@ public class GameManager : MonoBehaviourPunCallbacks
     public GameObject pauseCanvas;
     public bool isPaused = false;
 
+    public GameObject spawnPoint;
+
     void Start()
     {
-        PhotonNetwork.Instantiate(playerPrefab.name, new Vector3(0, 0, 0), Quaternion.identity);
+        spawnPoint = GameObject.Find("SpawnPoint");
+
+        PhotonNetwork.Instantiate(playerPrefab.name, spawnPoint.transform.position, Quaternion.identity);
 
         pauseCanvas.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
