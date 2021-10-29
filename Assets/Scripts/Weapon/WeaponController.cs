@@ -43,7 +43,7 @@ public class WeaponController : MonoBehaviourPunCallbacks
         GameObject bulletInstantiated = PhotonNetwork.Instantiate("Prefabs/Weapons/" + bullet.name, shootPoint.position, shootPoint.rotation);
 
         Rigidbody bulletRB = bulletInstantiated.GetComponent<Rigidbody>();
-        bulletRB.AddForce(shootPoint.right * 40, ForceMode.Impulse);
+        bulletRB.AddForce(shootPoint.right * 30, ForceMode.Impulse);
         bulletInstantiated.GetComponent<BulletController>().shootPoint = shootPoint;
 
         startTime = Time.time;
