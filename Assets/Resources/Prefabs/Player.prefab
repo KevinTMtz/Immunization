@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8367008258481581943}
   - component: {fileID: 5326774203651653465}
   - component: {fileID: 6273184736019256201}
+  - component: {fileID: 303979261489981907}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -36,6 +37,7 @@ Transform:
   - {fileID: 8827230586297616312}
   - {fileID: 2914944483136328393}
   - {fileID: 4276407457753204007}
+  - {fileID: 2145647268631292592}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -142,6 +144,50 @@ CapsuleCollider:
   m_Height: 2.3522034
   m_Direction: 1
   m_Center: {x: 0.006011963, y: 0.0034179688, z: 0}
+--- !u!114 &303979261489981907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6613367290611152090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3260ab1a7adc47ccbfa73dbe6251956, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shootPoint: {fileID: 2145647268631292592}
+  bullet: {fileID: 672515860094952351, guid: 4cfffa2f875e16444a1aa80acb915297, type: 3}
+--- !u!1 &8583027877053323932
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2145647268631292592}
+  m_Layer: 0
+  m_Name: ShootPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2145647268631292592
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8583027877053323932}
+  m_LocalRotation: {x: 0, y: -0.7372774, z: 0, w: 0.67559016}
+  m_LocalPosition: {x: 0.33, y: 0.08451783, z: 1.829}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5599224465533839789}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: -95, z: 0}
 --- !u!1 &8956339572338294651
 GameObject:
   m_ObjectHideFlags: 0
@@ -555,6 +601,10 @@ PrefabInstance:
     - target: {fileID: 3696439805872952319, guid: 760a5cd9833938442ba8a4b54bfa8148, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3696439805872984001, guid: 760a5cd9833938442ba8a4b54bfa8148, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8587774576786866763, guid: 760a5cd9833938442ba8a4b54bfa8148, type: 3}
