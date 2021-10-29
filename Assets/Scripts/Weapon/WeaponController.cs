@@ -31,7 +31,7 @@ public class WeaponController : MonoBehaviourPunCallbacks
 
             if (Input.GetAxis("Fire3") == 1 && ableToShoot)
             {
-                GameObject bulletInstantiated = PhotonNetwork.Instantiate("Weapons/" + bullet.name, shootPoint.position, shootPoint.rotation);
+                GameObject bulletInstantiated = PhotonNetwork.Instantiate("Prefabs/Weapons/" + bullet.name, shootPoint.position, shootPoint.rotation);
 
                 Rigidbody bulletRB = bulletInstantiated.GetComponent<Rigidbody>();
                 bulletRB.AddForce(shootPoint.right * 40, ForceMode.Impulse);

@@ -10,14 +10,19 @@ public class BulletController : MonoBehaviourPunCallbacks, IPunObservable
     void Start()
     {
         pv = GetComponent<PhotonView>();
-        Destroy(gameObject, 4f);
+        StartCoroutine(DestroyIn(4f));
     }
 
+    IEnumerator DestroyIn(float time)
+    {
+        yield return new WaitForSeconds(time);
+        PhotonNetwork.Destroy(gameObject);
+    }
     void Update()
     {
         if (pv.IsMine)
         {
-            pv.RPC("RPC_syncHealth", RpcTarget.AllBuffered, transform);
+            pv.RPC("RPC_syncTransform", RpcTarget.AllBuffered, pv.ViewID);
         }
     }
 
@@ -34,10 +39,16 @@ public class BulletController : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     [PunRPC]
-    void RPC_syncTransform(Transform new_transform)
+    void RPC_syncTransform(int playerId)
     {
-        transform.position = new_transform.position;
-        transform.rotation = new_transform.rotation;
+        PhotonView bullet_pv = PhotonView.Find(playerId);
+        if (bullet_pv)
+        {
+            Transform new_transform = bullet_pv.gameObject.GetComponent<Transform>();
+            transform.position = new_transform.position;
+            transform.rotation = new_transform.rotation;
+        }
+
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
