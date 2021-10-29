@@ -13,13 +13,13 @@ public class EnemyAttackController : MonoBehaviourPunCallbacks
 
     private float shootWaitTime;
 
-    private bool ableToShoot;
+    private bool ableToShoot = false;
     private float startTime;
     private float endTime;
     private PhotonView pv;
     private float playerDistance;
     private float closerPlayerDistance = 100000;
-    private int closerPlayerId;
+    private int closerPlayerId = -1;
 
     void Start()
     {
@@ -31,9 +31,10 @@ public class EnemyAttackController : MonoBehaviourPunCallbacks
     void Update()
     {
         playerDistance = Vector3.Distance(player.transform.position, gameObject.transform.position);
+        Debug.Log(playerDistance);
         if (playerDistance < 10)
         {
-            if (closerPlayerDistance != 100000 && playerDistance < closerPlayerDistance)
+            if (playerDistance < closerPlayerDistance)
             {
                 pv.RPC("RPC_SelectPlayer", RpcTarget.AllBuffered, playerDistance, player.GetComponent<PhotonView>().ViewID);
             }
@@ -75,7 +76,11 @@ public class EnemyAttackController : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_AimPlayer()
     {
-        Transform playerTransform = PhotonView.Find(closerPlayerId).gameObject.GetComponent<Transform>();
+        if (closerPlayerId == -1)
+            return;
+
+        PhotonView playerPV = PhotonView.Find(closerPlayerId);
+        Transform playerTransform = playerPV.gameObject.GetComponent<Transform>();
         gameObject.transform.LookAt(playerTransform.position);
         if (Time.time > endTime && ableToShoot == false)
             ableToShoot = true;
