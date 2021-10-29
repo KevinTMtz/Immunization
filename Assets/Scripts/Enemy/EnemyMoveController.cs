@@ -25,7 +25,6 @@ public class EnemyMoveController : MonoBehaviourPunCallbacks, IPunObservable
 
     void Start()
     {
-
         agent = GetComponent<NavMeshAgent>();
         if (PhotonNetwork.IsMasterClient)
         {
@@ -51,6 +50,14 @@ public class EnemyMoveController : MonoBehaviourPunCallbacks, IPunObservable
         CheckHealth();
     }
 
+    void OnTriggerEnter(Collider other) 
+    {
+        if (other.CompareTag("Bullet")) 
+        {
+            health--;
+        }
+    }
+
     void CheckHealth()
     {
         if (isDead) return;
@@ -60,17 +67,15 @@ public class EnemyMoveController : MonoBehaviourPunCallbacks, IPunObservable
             // Set collider enable to false
             // Set dead animation
             pv.RPC("PRC_isDead", RpcTarget.OthersBuffered);
-            DestroyAfterTime(gameObject, 3);
+            PhotonNetwork.Destroy(gameObject);
         }
     }
-
 
     void SyncTransform()
     {
         transform.position = Vector3.Lerp(transform.position, syncPos, 0.1f);
         transform.rotation = Quaternion.Lerp(transform.rotation, syncRot, 0.1f);
     }
-
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
@@ -92,16 +97,5 @@ public class EnemyMoveController : MonoBehaviourPunCallbacks, IPunObservable
         isDead = true;
         // Change collide
         // Set animation
-    }
-
-    void DestroyAfterTime(GameObject obj, float time)
-    {
-        StartCoroutine(CoDestroyAfterTime(obj, time));
-    }
-
-    IEnumerator CoDestroyAfterTime(GameObject obj, float time)
-    {
-        yield return new WaitForSeconds(time);
-        PhotonNetwork.Destroy(obj);
     }
 }

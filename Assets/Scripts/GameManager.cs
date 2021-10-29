@@ -41,15 +41,13 @@ public class GameManager : MonoBehaviourPunCallbacks
             StartCoroutine(SpawnEnemy(enemySpawnPoints[i]));
 
         }
-
-
     }
 
     IEnumerator SpawnEnemy(Transform spawnPoint)
     {
         for (int i = 0; i < spawnLimit; i++)
         {
-            yield return new WaitForSeconds(Random.Range(10f, 20f));
+            yield return new WaitForSeconds(Random.Range(10f, 15f));
             GameObject enemy = spawner.spawnAt(spawnPoint.position, spawnPoint.rotation);
         }
     }

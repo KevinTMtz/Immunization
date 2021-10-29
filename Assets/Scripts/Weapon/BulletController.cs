@@ -9,8 +9,10 @@ public class BulletController : MonoBehaviour
         Destroy(gameObject, 4f);
     }
 
-    void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag("Enemy")) {
+    void OnTriggerEnter(Collider other) 
+    {
+        if (other.CompareTag("Enemy")) 
+        {
             Destroy(gameObject);
         }
     }
