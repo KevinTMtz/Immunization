@@ -2,16 +2,31 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletController : MonoBehaviour
+using Photon.Pun;
+
+public class BulletController : MonoBehaviourPunCallbacks
 {
+    public Transform shootPoint;
+    public int userId;
     void Start()
     {
-        Destroy(gameObject, 4f);
+        StartCoroutine(DestroyIn(4f));
     }
 
-    void OnTriggerEnter2D(Collider2D other) {
-        if (other.CompareTag("Enemy")) {
-            Destroy(gameObject);
-        }
+    IEnumerator DestroyIn(float time)
+    {
+        yield return new WaitForSeconds(time);
+        Destroy(gameObject);
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            Destroy(gameObject);
+
+        }
+
+    }
+
 }

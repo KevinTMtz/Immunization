@@ -25,7 +25,6 @@ public class EnemyMoveController : MonoBehaviourPunCallbacks, IPunObservable
 
     void Start()
     {
-
         agent = GetComponent<NavMeshAgent>();
         if (PhotonNetwork.IsMasterClient)
         {
@@ -51,19 +50,30 @@ public class EnemyMoveController : MonoBehaviourPunCallbacks, IPunObservable
         CheckHealth();
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Bullet"))
+        {
+            health--;
+            if (health < 0)
+            {
+                health = 0;
+            }
+            pv.RPC("RPC_syncHealth", RpcTarget.AllBuffered, health);
+        }
+    }
+
     void CheckHealth()
     {
-        if (isDead) return;
-        if (health <= 0)
+        if (isDead || health <= 0)
         {
             isDead = true;
             // Set collider enable to false
             // Set dead animation
-            pv.RPC("PRC_isDead", RpcTarget.OthersBuffered);
-            DestroyAfterTime(gameObject, 3);
+            pv.RPC("RPC_isDead", RpcTarget.AllBuffered);
+            PhotonNetwork.Destroy(gameObject);
         }
     }
-
 
     void SyncTransform()
     {
@@ -71,37 +81,33 @@ public class EnemyMoveController : MonoBehaviourPunCallbacks, IPunObservable
         transform.rotation = Quaternion.Lerp(transform.rotation, syncRot, 0.1f);
     }
 
-
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
         {
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
+            stream.SendNext(health);
         }
         else
         {
             syncPos = (Vector3)stream.ReceiveNext();
             syncRot = (Quaternion)stream.ReceiveNext();
+            health = (int)stream.ReceiveNext();
         }
     }
 
     [PunRPC]
-    void PRC_isDead()
+    void RPC_isDead()
     {
         isDead = true;
         // Change collide
         // Set animation
     }
 
-    void DestroyAfterTime(GameObject obj, float time)
+    [PunRPC]
+    void RPC_syncHealth(int newValue)
     {
-        StartCoroutine(CoDestroyAfterTime(obj, time));
-    }
-
-    IEnumerator CoDestroyAfterTime(GameObject obj, float time)
-    {
-        yield return new WaitForSeconds(time);
-        PhotonNetwork.Destroy(obj);
+        health = newValue;
     }
 }
