@@ -31,17 +31,23 @@ public class WeaponController : MonoBehaviourPunCallbacks
 
             if (Input.GetAxis("Fire3") == 1 && ableToShoot)
             {
-                GameObject bulletInstantiated = PhotonNetwork.Instantiate("Prefabs/Weapons/" + bullet.name, shootPoint.position, shootPoint.rotation);
-
-                Rigidbody bulletRB = bulletInstantiated.GetComponent<Rigidbody>();
-                bulletRB.AddForce(shootPoint.right * 40, ForceMode.Impulse);
-                bulletInstantiated.GetComponent<BulletController>().shootPoint = shootPoint;
-
-                startTime = Time.time;
-                endTime = startTime + shootWaitTime;
-                ableToShoot = false;
+                photonView.RPC("RPC_Shoot", RpcTarget.All);
             }
         }
 
+    }
+
+    [PunRPC]
+    void RPC_Shoot()
+    {
+        GameObject bulletInstantiated = PhotonNetwork.Instantiate("Prefabs/Weapons/" + bullet.name, shootPoint.position, shootPoint.rotation);
+
+        Rigidbody bulletRB = bulletInstantiated.GetComponent<Rigidbody>();
+        bulletRB.AddForce(shootPoint.right * 40, ForceMode.Impulse);
+        bulletInstantiated.GetComponent<BulletController>().shootPoint = shootPoint;
+
+        startTime = Time.time;
+        endTime = startTime + shootWaitTime;
+        ableToShoot = false;
     }
 }
