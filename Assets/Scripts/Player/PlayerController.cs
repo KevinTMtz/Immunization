@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     CharacterController characterController;
 
-    float rotationSpeed = 0.8f;
+    float rotationSpeed = 1.2f;
     float verticalAngle, horizontalAngle;
 
     void Start()
