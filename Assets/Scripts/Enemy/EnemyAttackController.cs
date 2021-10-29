@@ -31,13 +31,11 @@ public class EnemyAttackController : MonoBehaviourPunCallbacks
     void Update()
     {
         playerDistance = Vector3.Distance(player.transform.position, gameObject.transform.position);
-        Debug.Log(playerDistance);
         if (playerDistance < 10)
         {
-            if (playerDistance < closerPlayerDistance)
-            {
-                pv.RPC("RPC_SelectPlayer", RpcTarget.AllBuffered, playerDistance, player.GetComponent<PhotonView>().ViewID);
-            }
+
+            pv.RPC("RPC_SelectPlayer", RpcTarget.AllBuffered, playerDistance, player.GetComponent<PhotonView>().ViewID);
+
         }
 
         if (pv.IsMine)
@@ -69,6 +67,7 @@ public class EnemyAttackController : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_SelectPlayer(float distance, int playerId)
     {
+        if (playerDistance >= closerPlayerDistance) return;
         closerPlayerDistance = distance;
         closerPlayerId = playerId;
     }
