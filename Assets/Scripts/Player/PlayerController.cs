@@ -16,14 +16,19 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
 
     CharacterController characterController;
 
+    float rotationSpeed = 0.8f;
+    float verticalAngle, horizontalAngle;
+
     void Start()
     {
-        characterController = GetComponent<CharacterController>();
-
         if (!photonView.IsMine)
         {
             GetComponentInChildren<Camera>().enabled = false;
             GetComponentInChildren<AudioListener>().enabled = false;
+        } 
+        else
+        {
+            characterController = GetComponent<CharacterController>();    
         }
     }
 
@@ -46,8 +51,23 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable
             verticalSpeed = verticalSpeed - 10.0f * Time.deltaTime;
             if (verticalSpeed < -10.0f) verticalSpeed = -10.0f;
             
-            var verticalMove = new Vector3(0, verticalSpeed * Time.deltaTime, 0);
+            Vector3 verticalMove = new Vector3(0, verticalSpeed * Time.deltaTime, 0);
             var flag = characterController.Move(verticalMove);
+
+            float turnPlayerX =  Input.GetAxis("Mouse X");
+            horizontalAngle = horizontalAngle + turnPlayerX * rotationSpeed;
+            if (horizontalAngle > 360) horizontalAngle -= 360.0f;
+            if (horizontalAngle < 0) horizontalAngle += 360.0f;
+            
+            Vector3 currentAngles = transform.localEulerAngles;
+            currentAngles.y = horizontalAngle;
+            transform.localEulerAngles = currentAngles;
+
+            float turnPlayerY = Input.GetAxis("Mouse Y");
+            verticalAngle = Mathf.Clamp(verticalAngle + turnPlayerY * rotationSpeed, -89.0f, 89.0f);
+            currentAngles = transform.localEulerAngles;
+            currentAngles.x = verticalAngle;
+            transform.localEulerAngles = currentAngles;
             
             if ((flag & CollisionFlags.Below) != 0) verticalSpeed = 0;
         }
