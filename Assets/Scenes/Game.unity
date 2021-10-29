@@ -1154,7 +1154,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2858009091107259156, guid: b79abcb9ee326264694320b336aa66c6, type: 3}
       propertyPath: MaxDistance
-      value: 30
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 4401481056137477695, guid: b79abcb9ee326264694320b336aa66c6, type: 3}
       propertyPath: m_IsActive
@@ -1610,7 +1610,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 465666951668141703, guid: 4cbb64337ca003c4d831290a0e9f461e, type: 3}
       propertyPath: MaxDistance
-      value: 30
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 853291470077401387, guid: 4cbb64337ca003c4d831290a0e9f461e, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1756,7 +1756,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5377442586654996881, guid: b9c7f73cbb9617a4c82234a257216bbf, type: 3}
       propertyPath: MaxDistance
-      value: 20
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 7682818807016896278, guid: b9c7f73cbb9617a4c82234a257216bbf, type: 3}
       propertyPath: m_Range
@@ -1929,7 +1929,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5377442586654996881, guid: b9c7f73cbb9617a4c82234a257216bbf, type: 3}
       propertyPath: MaxDistance
-      value: 30
+      value: 25
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9c7f73cbb9617a4c82234a257216bbf, type: 3}
@@ -2685,7 +2685,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 465666951668141703, guid: 4cbb64337ca003c4d831290a0e9f461e, type: 3}
       propertyPath: MaxDistance
-      value: 30
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 853291470077401387, guid: 4cbb64337ca003c4d831290a0e9f461e, type: 3}
       propertyPath: m_LocalPosition.y
