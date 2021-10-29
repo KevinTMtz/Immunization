@@ -44,6 +44,9 @@ MonoBehaviour:
   - RPC_syncHealth
   - RPC_syncTransform
   - RPC_Shoot
+  - RPC_ShootPlayer
+  - RPC_AimPlayer
+  - RPC_SelectPlayer
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

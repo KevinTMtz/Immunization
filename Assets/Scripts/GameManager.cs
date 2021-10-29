@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     public static GameManager instance;
     public GameObject[] targets;
     public GameObject playerPrefab;
-    // TODO: Add component Photon Transform View and Photon View to player prefab 
     public GameObject pauseCanvas;
     public bool isPaused = false;
 
@@ -65,7 +64,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        // TODO: Change to proper pause button
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             isPaused = !isPaused;
