@@ -50,23 +50,27 @@ public class EnemyMoveController : MonoBehaviourPunCallbacks, IPunObservable
         CheckHealth();
     }
 
-    void OnTriggerEnter(Collider other) 
+    void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Bullet")) 
+        if (other.CompareTag("Bullet"))
         {
             health--;
+            if (health < 0)
+            {
+                health = 0;
+            }
+            pv.RPC("RPC_syncHealth", RpcTarget.AllBuffered, health);
         }
     }
 
     void CheckHealth()
     {
-        if (isDead) return;
-        if (health <= 0)
+        if (isDead || health <= 0)
         {
             isDead = true;
             // Set collider enable to false
             // Set dead animation
-            pv.RPC("PRC_isDead", RpcTarget.OthersBuffered);
+            pv.RPC("RPC_isDead", RpcTarget.AllBuffered);
             PhotonNetwork.Destroy(gameObject);
         }
     }
@@ -83,19 +87,27 @@ public class EnemyMoveController : MonoBehaviourPunCallbacks, IPunObservable
         {
             stream.SendNext(transform.position);
             stream.SendNext(transform.rotation);
+            stream.SendNext(health);
         }
         else
         {
             syncPos = (Vector3)stream.ReceiveNext();
             syncRot = (Quaternion)stream.ReceiveNext();
+            health = (int)stream.ReceiveNext();
         }
     }
 
     [PunRPC]
-    void PRC_isDead()
+    void RPC_isDead()
     {
         isDead = true;
         // Change collide
         // Set animation
+    }
+
+    [PunRPC]
+    void RPC_syncHealth(int newValue)
+    {
+        health = newValue;
     }
 }
