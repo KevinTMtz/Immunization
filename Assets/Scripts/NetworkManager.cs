@@ -7,15 +7,22 @@ using Photon.Realtime;
 
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
+    public GameObject button;
 
     private void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true;
+        button.SetActive(false);
     }
 
     void Start()
     {
         if (!PhotonNetwork.IsConnected) Connect();
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        button.SetActive(true);
     }
 
     public void Connect()
