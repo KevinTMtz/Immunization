@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponController : MonoBehaviour
+using Photon.Pun;
+
+public class WeaponController : MonoBehaviourPunCallbacks
 {
     public Transform shootPoint;
     public GameObject bullet;
@@ -12,27 +14,33 @@ public class WeaponController : MonoBehaviour
     private bool ableToShoot;
     private float startTime;
     private float endTime;
+    private PhotonView pv;
 
     void Start()
     {
         shootWaitTime = 0.1f;
+        pv = GetComponent<PhotonView>();
     }
 
     void Update()
-    {   
-        if (Time.time > endTime && ableToShoot == false)
-            ableToShoot = true;
-
-        if (Input.GetAxis("Fire3") == 1 && ableToShoot)
+    {
+        if (pv.IsMine)
         {
-            GameObject bulletInstantiated = Instantiate(bullet, shootPoint.position, shootPoint.rotation);
+            if (Time.time > endTime && ableToShoot == false)
+                ableToShoot = true;
 
-            Rigidbody bulletRB = bulletInstantiated.GetComponent<Rigidbody>();
-            bulletRB.AddForce(shootPoint.right * 40, ForceMode.Impulse);
+            if (Input.GetAxis("Fire3") == 1 && ableToShoot)
+            {
+                GameObject bulletInstantiated = PhotonNetwork.Instantiate("Weapons/" + bullet.name, shootPoint.position, shootPoint.rotation);
 
-            startTime = Time.time;
-            endTime = startTime + shootWaitTime;
-            ableToShoot = false;
+                Rigidbody bulletRB = bulletInstantiated.GetComponent<Rigidbody>();
+                bulletRB.AddForce(shootPoint.right * 40, ForceMode.Impulse);
+
+                startTime = Time.time;
+                endTime = startTime + shootWaitTime;
+                ableToShoot = false;
+            }
         }
+
     }
 }
