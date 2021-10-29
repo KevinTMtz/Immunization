@@ -14,6 +14,8 @@ public class EnemyMoveController : MonoBehaviourPunCallbacks, IPunObservable
     private Quaternion syncRot = Quaternion.identity;
 
     private NavMeshAgent agent;
+    public int health = 10;
+    public PhotonView pv;
 
     void Awake()
     {
@@ -46,6 +48,20 @@ public class EnemyMoveController : MonoBehaviourPunCallbacks, IPunObservable
         }
 
         // TODO: Check if target is still available
+        CheckHealth();
+    }
+
+    void CheckHealth()
+    {
+        if (isDead) return;
+        if (health <= 0)
+        {
+            isDead = true;
+            // Set collider enable to false
+            // Set dead animation
+            pv.RPC("PRC_isDead", RpcTarget.OthersBuffered);
+            DestroyAfterTime(gameObject, 3);
+        }
     }
 
 
@@ -68,5 +84,24 @@ public class EnemyMoveController : MonoBehaviourPunCallbacks, IPunObservable
             syncPos = (Vector3)stream.ReceiveNext();
             syncRot = (Quaternion)stream.ReceiveNext();
         }
+    }
+
+    [PunRPC]
+    void PRC_isDead()
+    {
+        isDead = true;
+        // Change collide
+        // Set animation
+    }
+
+    void DestroyAfterTime(GameObject obj, float time)
+    {
+        StartCoroutine(CoDestroyAfterTime(obj, time));
+    }
+
+    IEnumerator CoDestroyAfterTime(GameObject obj, float time)
+    {
+        yield return new WaitForSeconds(time);
+        PhotonNetwork.Destroy(obj);
     }
 }

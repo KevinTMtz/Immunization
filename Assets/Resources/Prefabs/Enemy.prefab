@@ -48,6 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAttacking: 0
   isDead: 0
+  health: 10
+  pv: {fileID: 4620576927417306076}
 --- !u!114 &4620576927417306076
 MonoBehaviour:
   m_ObjectHideFlags: 0
