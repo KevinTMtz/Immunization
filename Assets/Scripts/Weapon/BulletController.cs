@@ -6,7 +6,9 @@ using Photon.Pun;
 
 public class BulletController : MonoBehaviourPunCallbacks, IPunObservable
 {
-    public PhotonView pv;
+    public Transform shootPoint;
+    public int userId;
+    private PhotonView pv;
     void Start()
     {
         pv = GetComponent<PhotonView>();
@@ -39,14 +41,17 @@ public class BulletController : MonoBehaviourPunCallbacks, IPunObservable
     }
 
     [PunRPC]
-    void RPC_syncTransform(int playerId)
+    void RPC_syncTransform(int bulletId)
     {
-        PhotonView bullet_pv = PhotonView.Find(playerId);
+        PhotonView bullet_pv = PhotonView.Find(bulletId);
         if (bullet_pv)
         {
             Transform new_transform = bullet_pv.gameObject.GetComponent<Transform>();
             transform.position = new_transform.position;
             transform.rotation = new_transform.rotation;
+
+            Rigidbody bulletRB = bullet_pv.gameObject.GetComponent<Rigidbody>();
+            bulletRB.AddForce(shootPoint.right * 40, ForceMode.Impulse);
         }
 
     }

@@ -35,6 +35,7 @@ public class WeaponController : MonoBehaviourPunCallbacks
 
                 Rigidbody bulletRB = bulletInstantiated.GetComponent<Rigidbody>();
                 bulletRB.AddForce(shootPoint.right * 40, ForceMode.Impulse);
+                bulletInstantiated.GetComponent<BulletController>().shootPoint = shootPoint;
 
                 startTime = Time.time;
                 endTime = startTime + shootWaitTime;
