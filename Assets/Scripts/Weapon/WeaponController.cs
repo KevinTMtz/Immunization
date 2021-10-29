@@ -40,7 +40,7 @@ public class WeaponController : MonoBehaviourPunCallbacks
     [PunRPC]
     void RPC_Shoot()
     {
-        GameObject bulletInstantiated = PhotonNetwork.Instantiate("Prefabs/Weapons/" + bullet.name, shootPoint.position, shootPoint.rotation);
+        GameObject bulletInstantiated = Instantiate(bullet, shootPoint.position, shootPoint.rotation);
 
         Rigidbody bulletRB = bulletInstantiated.GetComponent<Rigidbody>();
         bulletRB.AddForce(shootPoint.right * 40, ForceMode.Impulse);
