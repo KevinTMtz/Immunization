@@ -17,6 +17,9 @@ public class EnemyAttackController : MonoBehaviourPunCallbacks
     private float startTime;
     private float endTime;
     private PhotonView pv;
+    private float playerDistance;
+    private float closerPlayerDistance = 100000;
+    private int closerPlayerId;
 
     void Start()
     {
@@ -27,21 +30,25 @@ public class EnemyAttackController : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if (pv.IsMine)
+        playerDistance = Vector3.Distance(player.transform.position, gameObject.transform.position);
+        if (playerDistance < 10)
         {
-            if (Vector3.Distance(player.transform.position, gameObject.transform.position) < 10)
+            if (closerPlayerDistance != 100000 && playerDistance < closerPlayerDistance)
             {
-                gameObject.transform.LookAt(player.transform.position);
-
-                if (Time.time > endTime && ableToShoot == false)
-                    ableToShoot = true;
-
-                if (ableToShoot)
-                {
-                    photonView.RPC("RPC_ShootPlayer", RpcTarget.All);
-                }
+                pv.RPC("RPC_SelectPlayer", RpcTarget.AllBuffered, playerDistance, player.GetComponent<PhotonView>().ViewID);
             }
         }
+
+        if (pv.IsMine)
+        {
+            pv.RPC("RPC_AimPlayer", RpcTarget.AllBuffered);
+            if (ableToShoot)
+            {
+                pv.RPC("RPC_ShootPlayer", RpcTarget.AllBuffered);
+            }
+
+        }
+
 
     }
 
@@ -56,5 +63,21 @@ public class EnemyAttackController : MonoBehaviourPunCallbacks
         startTime = Time.time;
         endTime = startTime + shootWaitTime;
         ableToShoot = false;
+    }
+
+    [PunRPC]
+    void RPC_SelectPlayer(float distance, int playerId)
+    {
+        closerPlayerDistance = distance;
+        closerPlayerId = playerId;
+    }
+
+    [PunRPC]
+    void RPC_AimPlayer()
+    {
+        Transform playerTransform = PhotonView.Find(closerPlayerId).gameObject.GetComponent<Transform>();
+        gameObject.transform.LookAt(playerTransform.position);
+        if (Time.time > endTime && ableToShoot == false)
+            ableToShoot = true;
     }
 }
