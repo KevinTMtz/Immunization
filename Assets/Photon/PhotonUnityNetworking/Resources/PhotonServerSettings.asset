@@ -42,6 +42,7 @@ MonoBehaviour:
   - PRC_isDead
   - RPC_isDead
   - RPC_syncHealth
+  - RPC_syncTransform
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
